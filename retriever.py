@@ -56,16 +56,17 @@ class TextSplit:
 
 class Retriever(TextSplit):
   def __init__(self,embeddings=embeddings , path=path):
-    super().__init__(path)
-    self.text_split = super().get_splits()
     self.vector_store = Chroma(
       collection_name="web_content",
       embedding_function=embeddings,
       persist_directory="./chroma_db",
     )
-    
-    if self.text_split and not self._document_exist(path):
-      self.vector_store.add_documents(documents=self.text_split)
+    if not self._document_exist(path):
+      super().__init__(path)
+      self.text_split = super().get_splits()
+      
+      if self.text_split:
+        self.vector_store.add_documents(documents=self.text_split)
   
   def _document_exist(self, path):
     try:

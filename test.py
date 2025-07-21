@@ -24,6 +24,7 @@ class TextSplit:
       print(f"Loaded {len(self.docs)} pages from PDF")
       
       if self.docs:
+    
         for i, doc in enumerate(self.docs):
           content = doc.page_content
           lines = content.split('\n')
